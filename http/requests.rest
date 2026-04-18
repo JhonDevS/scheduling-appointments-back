@@ -1,0 +1,31 @@
+# Scheduling Appointments API - REST Client Collection
+
+@baseUrl = http://localhost:3000
+@apiUrl = {{baseUrl}}/api/v1
+
+# ============================================
+# HEALTH ENDPOINTS
+# ============================================
+
+### Health Check - GET
+GET {{apiUrl}}/health
+Accept: application/json
+
+### Health Check - Swagger UI
+GET {{baseUrl}}/api-docs
+
+### Health Check - OpenAPI JSON
+GET {{baseUrl}}/api-docs.json
+Accept: application/json
+
+# ============================================
+# FUTURE ENDPOINTS (Agregar aquí)
+# ============================================
+
+### Example POST request
+# POST {{apiUrl}}/example
+# Content-Type: application/json
+# 
+# {
+#   "name": "test"
+# }
