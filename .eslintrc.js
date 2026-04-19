@@ -21,5 +21,11 @@ module.exports = {
     'new-cap': 'off',
     indent: 'off',
     'quote-props': 'off',
+    'arrow-parens': 'off',
+    'object-curly-newline': 'off',
+    'object-shorthand': 'off',
+    quotes: 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'no-undef': 'off',
   },
 };

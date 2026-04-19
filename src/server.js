@@ -3,6 +3,7 @@ require('dotenv').config();
 const app = require('./app');
 const logger = require('./utils/logger');
 const { testConnection } = require('./dao/database');
+const { runMigrations, checkMigrations } = require('./migrations');
 
 const PORT = process.env.PORT || 3000;
 
@@ -11,6 +12,16 @@ const startServer = async () => {
     if (process.env.NODE_ENV !== 'test') {
       try {
         await testConnection();
+        logger.info('Database connection established');
+
+        const pending = await checkMigrations();
+        if (pending.length > 0) {
+          logger.info(`Found ${pending.length} pending migrations, running...`);
+          await runMigrations();
+          logger.info('Migrations completed successfully');
+        } else {
+          logger.info('Database is up to date');
+        }
       } catch (dbError) {
         logger.warn('Database connection unavailable, starting without DB');
       }
