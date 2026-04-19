@@ -28,6 +28,14 @@ jobs:
       - name: Run ESLint
         run: pnpm run lint
 
+      - name: Format code
+        run: pnpm run format
+
+      - name: Commit formatted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'style: auto-format code'
+
       - name: Run Prettier check
         run: pnpm run format:check
 
