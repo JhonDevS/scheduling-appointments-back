@@ -1,0 +1,48 @@
+# Dependencies (se maneja en Docker)
+node_modules/
+pnpm-store/
+.pnpm/
+
+# Build
+dist/
+build/
+coverage/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.docker/
+
+# Test
+*.test.js
+__tests__/
+coverage/
+
+# Docs
+*.md
+!README.md
+
+# Lock files (usar en Docker)
+# pnpm-lock.yaml se NECESITA para --frozen-lockfile
