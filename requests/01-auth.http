@@ -1,0 +1,23 @@
+### Registro de usuario
+@BASE_URL = http://localhost:3000/api/v1
+@CONTENT_TYPE = application/json
+
+POST {{BASE_URL}}/auth/register
+Content-Type: {{CONTENT_TYPE}}
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Login
+POST {{BASE_URL}}/auth/login
+Content-Type: {{CONTENT_TYPE}}
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+GET {{BASE_URL}}/auth/me
+Authorization: Bearer YOUR_TOKEN_HERE

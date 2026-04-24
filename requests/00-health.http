@@ -1,0 +1,6 @@
+### Variables globales
+@BASE_URL = http://localhost:3000/api/v1
+@CONTENT_TYPE = application/json
+
+### Health check
+GET {{BASE_URL}}/health
