@@ -4,18 +4,22 @@ const response = require('../utils/response');
 const authController = {
   async register(req, res, _) {
     try {
-      const { email, password } = req.body;
+      const { email, password, nombreCompleto } = req.body;
 
       if (!email || !password) {
-        return response.error(res, 400, 'Email and password are required');
+        return response.error(res, 400, 'Email y contraseña son requeridos');
+      }
+
+      if (!nombreCompleto) {
+        return response.error(res, 400, 'Nombre completo es requerido');
       }
 
       if (password.length < 6) {
-        return response.error(res, 400, 'Password must be at least 6 characters');
+        return response.error(res, 400, 'La contraseña debe tener al menos 6 caracteres');
       }
 
-      const user = await userService.register(email, password);
-      return response.success(res, 201, 'User registered successfully', user);
+      const usuario = await userService.register(email, password, nombreCompleto);
+      return response.success(res, 201, 'Usuario registrado exitosamente', usuario);
     } catch (error) {
       return response.error(res, error.statusCode || 500, error.message);
     }
@@ -26,11 +30,11 @@ const authController = {
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return response.error(res, 400, 'Email and password are required');
+        return response.error(res, 400, 'Email y contraseña son requeridos');
       }
 
       const result = await userService.login(email, password);
-      return response.success(res, 200, 'Login successful', result);
+      return response.success(res, 200, 'Login exitoso', result);
     } catch (error) {
       return response.error(res, error.statusCode || 500, error.message);
     }

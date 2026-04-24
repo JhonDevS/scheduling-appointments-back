@@ -18,7 +18,7 @@ const authMiddleware = async (req, res, next) => {
     const token = authHeader.substring(7);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = { id: decoded.userId };
+    req.user = { id: decoded.usuarioId };
     next();
   } catch (error) {
     logger.error('JWT validation error:', error);

@@ -1,37 +1,37 @@
-const { User } = require('../models');
+const { Usuario } = require('../models');
 const logger = require('../utils/logger');
 
-const userDao = {
-  async create(userData) {
+const usuarioDao = {
+  async create(usuarioData) {
     try {
-      const user = await User.create(userData);
-      logger.info(`User created with id: ${user.id}`);
-      return user;
+      const usuario = await Usuario.create(usuarioData);
+      logger.info(`Usuario created with id: ${usuario.id}`);
+      return usuario;
     } catch (error) {
-      logger.error('Error creating user:', error);
+      logger.error('Error creating usuario:', error);
       throw error;
     }
   },
 
   async findByEmail(email) {
     try {
-      const user = await User.findOne({ where: { email } });
-      return user;
+      const usuario = await Usuario.findOne({ where: { email } });
+      return usuario;
     } catch (error) {
-      logger.error('Error finding user by email:', error);
+      logger.error('Error finding usuario by email:', error);
       throw error;
     }
   },
 
   async findById(id) {
     try {
-      const user = await User.findByPk(id);
-      return user;
+      const usuario = await Usuario.findByPk(id);
+      return usuario;
     } catch (error) {
-      logger.error('Error finding user by id:', error);
+      logger.error('Error finding usuario by id:', error);
       throw error;
     }
   },
 };
 
-module.exports = userDao;
+module.exports = usuarioDao;

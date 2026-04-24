@@ -7,7 +7,8 @@ Content-Type: {{CONTENT_TYPE}}
 
 {
   "email": "test@example.com",
-  "password": "password123"
+  "password": "password123",
+  "nombreCompleto": "Test Usuario"
 }
 
 ### Login
@@ -19,5 +20,6 @@ Content-Type: {{CONTENT_TYPE}}
   "password": "password123"
 }
 
+### Get Me
 GET {{BASE_URL}}/auth/me
-Authorization: Bearer YOUR_TOKEN_HERE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEsImlhdCI6MTc3NzA2NzczMywiZXhwIjoxNzc3MDcxMzMzfQ.r0fFDqbfK4cRm1pMSz1xA3Y-sRh179zPii6Enc7SLUA

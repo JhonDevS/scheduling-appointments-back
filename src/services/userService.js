@@ -4,73 +4,74 @@ const userDao = require('../dao/userDao');
 const logger = require('../utils/logger');
 
 const userService = {
-  async register(email, password) {
+  async register(email, password, nombreCompleto) {
     try {
       const existingUser = await userDao.findByEmail(email);
       if (existingUser) {
-        const error = new Error('User with this email already exists');
+        const error = new Error('Ya existe un usuario con este correo electrónico');
         error.statusCode = 409;
         throw error;
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const user = await userDao.create({
+      const usuario = await userDao.create({
         email,
-        password: hashedPassword,
+        password_hash: hashedPassword,
+        nombreCompleto: nombreCompleto,
       });
 
-      logger.info(`User registered: ${user.id}`);
+      logger.info(`Usuario registrado: ${usuario.id}`);
 
       return {
-        id: user.id,
-        email: user.email,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        id: usuario.id,
+        email: usuario.email,
+        createdAt: usuario.created_at,
+        updatedAt: usuario.updated_at,
       };
     } catch (error) {
-      logger.error('Error registering user:', error);
+      logger.error('Error registering usuario:', error);
       throw error;
     }
   },
 
   async login(email, password) {
     try {
-      const user = await userDao.findByEmail(email);
-      if (!user) {
-        const error = new Error('Invalid credentials');
+      const usuario = await userDao.findByEmail(email);
+      if (!usuario) {
+        const error = new Error('Credenciales inválidas');
         error.statusCode = 401;
         throw error;
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, usuario.password_hash);
       if (!isPasswordValid) {
-        const error = new Error('Invalid credentials');
+        const error = new Error('Credenciales inválidas');
         error.statusCode = 401;
         throw error;
       }
 
-      const token = this.generateToken(user.id);
+      const token = this.generateToken(usuario.id);
 
-      logger.info(`User logged in: ${user.id}`);
+      logger.info(`Usuario inició sesión: ${usuario.id}`);
 
       return {
-        user: {
-          id: user.id,
-          email: user.email,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
+        usuario: {
+          id: usuario.id,
+          email: usuario.email,
+          createdAt: usuario.created_at,
+          updatedAt: usuario.updated_at,
         },
         token,
       };
     } catch (error) {
-      logger.error('Error logging in user:', error);
+      logger.error('Error logging in usuario:', error);
       throw error;
     }
   },
 
-  generateToken(userId) {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+  generateToken(usuarioId) {
+    const token = jwt.sign({ usuarioId }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
     return token;

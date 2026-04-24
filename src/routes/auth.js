@@ -92,26 +92,26 @@ router.post('/login', authController.login);
  */
 router.get('/me', authMiddleware, async (req, res, _) => {
   try {
-    const { User } = require('../models');
-    const user = await User.findByPk(req.user.id, {
-      attributes: { exclude: ['password'] },
+    const { Usuario } = require('../models');
+    const usuario = await Usuario.findByPk(req.user.id, {
+      attributes: { exclude: ['password_hash'] },
     });
 
-    if (!user) {
+    if (!usuario) {
       return res.status(404).json({
         success: false,
-        error: { message: 'User not found' },
+        error: { message: 'Usuario no encontrado' },
       });
     }
 
     return res.status(200).json({
       success: true,
-      data: user,
+      data: usuario,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      error: { message: 'Server error' },
+      error: { message: 'Error del servidor' },
     });
   }
 });
