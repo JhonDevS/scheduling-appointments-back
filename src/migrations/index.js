@@ -25,10 +25,19 @@ const getSequelizeConfig = () => ({
 // Create Sequelize instance
 const sequelize = new Sequelize(getSequelizeConfig());
 
-// Configure Umzug - context is the sequelize instance itself
+// Configure Umzug - context is the Sequelize QueryInterface
 const umzug = new Umzug({
   migrations: {
     glob: ['*.js', { cwd: __dirname, ignore: ['index.js'] }],
+    resolve: ({ name, path: migrationPath, context }) => {
+      // eslint-disable-next-line import/no-dynamic-require
+      const migration = require(migrationPath);
+      return {
+        name,
+        up: async () => migration.up({ context }),
+        down: async () => migration.down({ context }),
+      };
+    },
   },
   storage: new SequelizeStorage({
     sequelize,

@@ -22,4 +22,4 @@ Content-Type: {{CONTENT_TYPE}}
 
 ### Get Me
 GET {{BASE_URL}}/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEsImlhdCI6MTc3NzA2NzczMywiZXhwIjoxNzc3MDcxMzMzfQ.r0fFDqbfK4cRm1pMSz1xA3Y-sRh179zPii6Enc7SLUA
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEsImlhdCI6MTc3NzU5NTc5MywiZXhwIjoxNzc3NTk5MzkzfQ._fbaBfhVFtH7a3Ju7otGRExBOb9m8pHgsiQvG8Ewmcc

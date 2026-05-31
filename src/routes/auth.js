@@ -1,6 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/authController');
 const authMiddleware = require('../middlewares/auth');
+const { Usuario, UsuarioRol, Rol } = require('../models');
 
 const router = express.Router();
 
@@ -92,7 +93,6 @@ router.post('/login', authController.login);
  */
 router.get('/me', authMiddleware, async (req, res, _) => {
   try {
-    const { Usuario } = require('../models');
     const usuario = await Usuario.findByPk(req.user.id, {
       attributes: { exclude: ['password_hash'] },
     });
@@ -104,9 +104,16 @@ router.get('/me', authMiddleware, async (req, res, _) => {
       });
     }
 
+    const asignaciones = await UsuarioRol.findAll({ where: { usuario_id: usuario.id } });
+    const rolIds = asignaciones.map(a => a.rol_id);
+    const roles = rolIds.length ? await Rol.findAll({ where: { id: rolIds } }) : [];
+
+    const plain = usuario.toJSON();
+    plain.roles = roles.map(r => r.nombre);
+
     return res.status(200).json({
       success: true,
-      data: usuario,
+      data: plain,
     });
   } catch (error) {
     return res.status(500).json({
@@ -115,5 +122,75 @@ router.get('/me', authMiddleware, async (req, res, _) => {
     });
   }
 });
+
+/**
+ * @swagger
+ * /api/v1/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     description: Invalidates user session on the client side.
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ */
+router.post('/logout', authController.logout);
+
+/**
+ * @swagger
+ * /api/v1/auth/forgot-password:
+ *   post:
+ *     summary: Request password reset
+ *     description: Starts password reset flow for a given email.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *     responses:
+ *       200:
+ *         description: Password reset requested
+ */
+router.post('/forgot-password', authController.forgotPassword);
+
+/**
+ * @swagger
+ * /api/v1/auth/oauth:
+ *   post:
+ *     summary: Login with OAuth provider
+ *     description: Login or register a user using an external OAuth provider.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - provider
+ *               - email
+ *             properties:
+ *               provider:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               name:
+ *                 type: string
+ *               credential:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: OAuth login successful
+ */
+router.post('/oauth', authController.oauth);
 
 module.exports = router;
