@@ -44,6 +44,10 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-info}
     ports:
       - '${PORT:-3000}:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm dev
     depends_on:
       db:
         condition: service_healthy

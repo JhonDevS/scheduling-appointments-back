@@ -10,6 +10,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-console': 'off',
     'import/extensions': 'off',
@@ -25,7 +26,6 @@ module.exports = {
     'object-curly-newline': 'off',
     'object-shorthand': 'off',
     quotes: 'off',
-    'import/no-extraneous-dependencies': 'off',
     'no-undef': 'off',
   },
 };

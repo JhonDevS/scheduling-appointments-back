@@ -35,7 +35,9 @@ module.exports = {
   },
   production: {
     dialect: 'postgres',
-    host: process.env.DB_HOST,
+    host: process.env.INSTANCE_CONNECTION_NAME
+      ? `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`
+      : process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10) || 5432,
     database: process.env.DB_NAME,
     username: process.env.DB_USER,
@@ -48,14 +50,16 @@ module.exports = {
       acquire: parseInt(process.env.DB_POOL_ACQUIRE, 10) || 30000,
       idle: parseInt(process.env.DB_POOL_IDLE, 10) || 10000,
     },
-    dialectOptions: {
-      ssl:
-        process.env.DB_SSL === 'true'
-          ? {
-              require: true,
-              rejectUnauthorized: false,
-            }
-          : false,
-    },
+    dialectOptions: process.env.INSTANCE_CONNECTION_NAME
+      ? { socketPath: `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}` }
+      : {
+          ssl:
+            process.env.DB_SSL === 'true'
+              ? {
+                  require: true,
+                  rejectUnauthorized: false,
+                }
+              : false,
+        },
   },
 };
