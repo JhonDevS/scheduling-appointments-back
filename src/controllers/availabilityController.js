@@ -11,6 +11,15 @@ const availabilityController = {
         return response.error(res, 400, 'doctorId inválido');
       }
 
+      // Si el rol es doctor, solo puede consultar su propia disponibilidad
+      const roles = req.user?.roles || [];
+      const isDoctor = roles.includes('doctor');
+      const isAdmin = roles.includes('admin');
+
+      if (isDoctor && !isAdmin && req.user?.id !== medicoId) {
+        return response.error(res, 403, 'Forbidden: insufficient role');
+      }
+
       const slots = await availabilityService.getDoctorBaseSchedule(medicoId);
       return response.success(res, 200, 'Horario base obtenido correctamente', slots);
     } catch (error) {
